@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Find Pair</title>
+<style>
+    * { box-sizing: border-box; }
+    body {
+        margin: 0;
+        min-height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background: #ffffff;
+        font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", Arial, sans-serif;
+        color: #222;
+    }
+    .app {
+        width: min(100%, 520px);
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        padding: 40px 24px;
+    }
+    h1 {
+        margin: 0 0 28px;
+        font-size: 28px;
+        font-weight: 700;
+        color: #222;
+    }
+    #result {
+        height: 34px;
+        margin-bottom: 18px;
+        font-size: 24px;
+        font-weight: 700;
+        color: #22c55e;
+    }
+    .grid {
+        display: grid;
+        grid-template-columns: repeat(2, 88px);
+        grid-template-rows: repeat(2, 88px);
+        gap: 14px;
+    }
+    .card {
+        width: 88px;
+        height: 88px;
+        border: 0;
+        border-radius: 6px;
+        background: #d1d1d6;
+        font-size: 42px;
+        cursor: pointer;
+        -webkit-tap-highlight-color: transparent;
+        transition: transform .12s ease, background .12s ease;
+    }
+    .card:active { transform: scale(.96); }
+    .card.open, .card.matched {
+        background: #f1f1f3;
+    }
+    .card.matched {
+        cursor: default;
+    }
+    #restart {
+        margin-top: 24px;
+        padding: 7px 14px;
+        border: 0;
+        border-radius: 5px;
+        background: #e9e9ed;
+        color: #1677d2;
+        font-size: 16px;
+        cursor: pointer;
+    }
+    .hint {
+        margin-top: 18px;
+        color: #8a8a8f;
+        font-size: 13px;
+        text-align: center;
+    }
+    @media (min-width: 700px) {
+        .app {
+            min-height: 700px;
+            max-height: 900px;
+        }
+    }
+</style>
+</head>
+<body>
+<div class="app">
+    <h1>Find Pair</h1>
+    <div id="result"></div>
+
+    <div class="grid">
+        <button class="card" data-index="0" aria-label="Card 1"></button>
+        <button class="card" data-index="1" aria-label="Card 2"></button>
+        <button class="card" data-index="2" aria-label="Card 3"></button>
+        <button class="card" data-index="3" aria-label="Card 4"></button>
+    </div>
+
+    <button id="restart">Заново</button>
+    <div class="hint">Найди две одинаковые пары эмодзи</div>
+</div>
+
+<script>
+const allEmojis = ["🐱","🐶","🦊","🐼","🐸","🐵","🦄","🐯"];
+const cards = [...document.querySelectorAll(".card")];
+const result = document.getElementById("result");
+const restart = document.getElementById("restart");
+
+let emojis = [];
+let opened = [];
+let matched = [];
+
+function shuffle(array) {
+    const a = [...array];
+    for (let i = a.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [a[i], a[j]] = [a[j], a[i]];
+    }
+    return a;
+}
+
+function newGame() {
+    result.textContent = "";
+    opened = [];
+    matched = [];
+
+    const selected = shuffle(allEmojis).slice(0, 2);
+    emojis = shuffle([selected[0], selected[0], selected[1], selected[1]]);
+
+    cards.forEach(card => {
+        card.textContent = "";
+        card.className = "card";
+        card.disabled = false;
+    });
+}
+
+function hideFirstTwo() {
+    if (opened.length >= 2) {
+        cards[opened[0]].textContent = "";
+        cards[opened[1]].textContent = "";
+        cards[opened[0]].classList.remove("open");
+        cards[opened[1]].classList.remove("open");
+        opened = opened.slice(2);
+    }
+}
+
+function tapCard(index) {
+    if (matched.includes(index)) return;
+
+    // According to the task: after two unequal cards,
+    // pressing the third card hides the first two and keeps the third open.
+    if (opened.length === 2) {
+        if (emojis[opened[0]] === emojis[opened[1]]) {
+            return;
+        }
+        hideFirstTwo();
+    }
+
+    if (opened.includes(index)) return;
+
+    cards[index].textContent = emojis[index];
+    cards[index].classList.add("open");
+    opened.push(index);
+
+    if (opened.length === 2) {
+        const [a, b] = opened;
+        if (emojis[a] === emojis[b]) {
+            matched.push(a, b);
+            cards[a].classList.add("matched");
+            cards[b].classList.add("matched");
+            opened = [];
+
+            if (matched.length === 4) {
+                result.textContent = "Победа!";
+                cards.forEach(card => card.disabled = true);
+            }
+        }
+    }
+}
+
+cards.forEach(card => {
+    card.addEventListener("click", () => tapCard(Number(card.dataset.index)));
+});
+
+restart.addEventListener("click", newGame);
+newGame();
+</script>
+</body>
+</html>
