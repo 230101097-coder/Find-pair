@@ -1,2 +1,2 @@
-# Find-pair
-find Pair Emoji Game
+# Игра для души
+играй когда будет скучно☺
