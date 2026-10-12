@@ -4,10 +4,17 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
 <title>Twindle ♡</title>
 
 <style>
+:root {
+    --pink: #ff5b9d;
+    --deep: #cf3978;
+    --light: #fff0f7;
+    --border: #ffb4d2;
+    --text: #9f3c6b;
+}
+
 * {
     box-sizing: border-box;
 }
@@ -15,23 +22,25 @@
 body {
     margin: 0;
     min-height: 100vh;
-    display: flex;
-    justify-content: center;
-    align-items: center;
     font-family: "Trebuchet MS", Arial, sans-serif;
-    color: #c43f79;
+    color: var(--text);
     background:
-        radial-gradient(circle at 10% 15%, #ffe7f1 0, transparent 30%),
-        radial-gradient(circle at 90% 80%, #ffb6d3 0, transparent 35%),
-        linear-gradient(145deg, #ffd9e9, #fff2f7, #ffc4dc);
-    overflow-x: hidden;
+        radial-gradient(circle at 10% 10%, #fff 0, transparent 25%),
+        radial-gradient(circle at 90% 70%, #ffacd0 0, transparent 30%),
+        linear-gradient(145deg, #ffd5e8, #fff1f7 50%, #ffc3de);
+}
+
+button {
+    font: inherit;
 }
 
 .app {
     position: relative;
-    width: min(100%, 520px);
+    width: 100%;
+    max-width: 560px;
     min-height: 100vh;
-    padding: 40px 20px;
+    margin: auto;
+    padding: 28px 18px 35px;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -40,176 +49,331 @@ body {
     isolation: isolate;
 }
 
-/* Декоративные стикеры */
-
-.sticker {
-    position: absolute;
+.decor {
+    position: fixed;
     z-index: -1;
     pointer-events: none;
     user-select: none;
-    filter: drop-shadow(0 5px 5px #e77ba633);
-    animation: float 3.5s ease-in-out infinite;
+    opacity: .8;
+    animation: float 4s ease-in-out infinite;
 }
 
-.sticker-1 {
-    top: 7%;
-    left: 5%;
-    font-size: 55px;
-    transform: rotate(-15deg);
+.d1 { top: 5%; left: 4%; font-size: 48px; }
+.d2 { top: 12%; right: 5%; font-size: 35px; animation-delay: 1s; }
+.d3 { top: 42%; left: 3%; font-size: 30px; animation-delay: .5s; }
+.d4 { top: 48%; right: 4%; font-size: 36px; animation-delay: 1.5s; }
+.d5 { bottom: 8%; left: 4%; font-size: 44px; animation-delay: .8s; }
+.d6 { bottom: 12%; right: 5%; font-size: 38px; animation-delay: 1.2s; }
+
+@keyframes float {
+    0%, 100% { transform: translateY(0) rotate(-5deg); }
+    50% { transform: translateY(-10px) rotate(5deg); }
 }
 
-.sticker-2 {
-    top: 12%;
-    right: 5%;
-    font-size: 42px;
-    animation-delay: .6s;
+@keyframes appear {
+    from { opacity: 0; transform: translateY(18px) scale(.97); }
+    to { opacity: 1; transform: translateY(0) scale(1); }
 }
 
-.sticker-3 {
-    top: 36%;
-    left: 4%;
-    font-size: 35px;
-    animation-delay: 1s;
+@keyframes pop {
+    0% { transform: scale(.6); }
+    70% { transform: scale(1.08); }
+    100% { transform: scale(1); }
 }
 
-.sticker-4 {
-    top: 48%;
-    right: 5%;
-    font-size: 38px;
-    animation-delay: .4s;
+@keyframes confettiFall {
+    0% { transform: translateY(-10vh) rotate(0deg); opacity: 1; }
+    100% { transform: translateY(110vh) rotate(720deg); opacity: 0; }
 }
 
-.sticker-5 {
-    bottom: 15%;
-    left: 5%;
-    font-size: 52px;
-    animation-delay: 1.2s;
+@keyframes glow {
+    0%, 100% { box-shadow: 0 0 12px #ff85b855; }
+    50% { box-shadow: 0 0 27px #ff65a988; }
 }
 
-.sticker-6 {
-    bottom: 12%;
-    right: 5%;
-    font-size: 48px;
-    animation-delay: .8s;
+.hidden {
+    display: none !important;
 }
 
-.sticker-7 {
-    top: 25%;
-    right: 12%;
+/* Логотип */
+
+.logo {
+    margin: 0;
+    text-align: center;
+    font-size: clamp(49px, 13vw, 70px);
+    font-weight: 900;
+    font-style: italic;
+    letter-spacing: -2px;
+    line-height: 1.2;
+    color: #ff4c96;
+    -webkit-text-stroke: 1px white;
+    text-shadow:
+        2px 2px 0 white,
+        4px 6px 0 #ffb2d0,
+        0 12px 25px #df619a44;
+}
+
+.logo span {
+    display: inline-block;
+    font-size: .65em;
+    animation: float 2s ease-in-out infinite;
+}
+
+.tagline {
+    margin: 12px 0 25px;
+    padding: 11px 20px;
+    border: 2px dashed #ff9ec4;
+    border-radius: 30px;
+    background: #ffffffbb;
+    color: #d84f89;
+    text-align: center;
+    font-size: 15px;
+    font-weight: 800;
+    box-shadow: 0 6px 18px #d8589120;
+}
+
+/* Карточки-панели */
+
+.panel {
+    width: 100%;
+    padding: 25px 20px;
+    border: 2px solid #ffffffd9;
+    border-radius: 30px;
+    background: #fff9fcce;
+    box-shadow:
+        0 18px 50px #db609a24,
+        inset 0 1px 0 white;
+    backdrop-filter: blur(12px);
+    animation: appear .45s ease both;
+}
+
+.panel-title {
+    margin: 0 0 8px;
+    text-align: center;
+    color: #cf3978;
+    font-size: 23px;
+    font-weight: 900;
+}
+
+.panel-text {
+    margin: 0 0 23px;
+    color: #b86a8c;
+    text-align: center;
+    font-size: 14px;
+    line-height: 1.6;
+}
+
+/* Кнопки */
+
+.primary,
+.secondary,
+.level-button {
+    border: 0;
+    cursor: pointer;
+    transition: transform .18s, box-shadow .18s;
+}
+
+.primary {
+    width: 100%;
+    padding: 16px 20px;
+    border: 2px solid #ff9bc3;
+    border-radius: 25px;
+    background: linear-gradient(135deg, #ffacd0, #ff579a);
+    color: white;
+    font-size: 17px;
+    font-weight: 900;
+    box-shadow: 0 6px 0 #dc4b89, 0 10px 22px #ec619b33;
+}
+
+.primary:hover,
+.secondary:hover,
+.level-button:hover {
+    transform: translateY(-3px);
+}
+
+.primary:active {
+    transform: translateY(3px);
+    box-shadow: 0 2px 0 #dc4b89;
+}
+
+.secondary {
+    padding: 12px 17px;
+    border: 2px solid #ffd0e2;
+    border-radius: 20px;
+    background: white;
+    color: #d14d86;
+    font-weight: 800;
+}
+
+.levels {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 10px;
+    margin: 0 0 22px;
+}
+
+.level-button {
+    min-width: 0;
+    padding: 16px 5px;
+    border: 2px solid #ffc1db;
+    border-radius: 19px;
+    background: linear-gradient(160deg, #fff, #ffe5f0);
+    color: #ca4b83;
+}
+
+.level-button strong {
+    display: block;
+    margin-bottom: 5px;
     font-size: 23px;
 }
 
-.sticker-8 {
-    bottom: 30%;
-    left: 8%;
-    font-size: 25px;
+.level-button small {
+    display: block;
+    font-size: 11px;
+    line-height: 1.4;
 }
 
-@keyframes float {
-    0%, 100% {
-        translate: 0 0;
-    }
-    50% {
-        translate: 0 -9px;
-    }
+.level-button.active {
+    border-color: #ff4c96;
+    background: linear-gradient(145deg, #ffdaea, #ffacd0);
+    box-shadow: 0 0 0 3px #ff80b422;
 }
 
-/* Название игры */
+/* Игровой экран */
 
-.game-title {
-    margin: 0 0 12px;
-    font-size: clamp(43px, 12vw, 60px);
+.game-header {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    margin-bottom: 17px;
+}
+
+.small-logo {
+    font-size: 29px;
     font-weight: 900;
     font-style: italic;
-    letter-spacing: 1px;
-    line-height: 1.2;
-    text-align: center;
-    color: #ff4f98;
-    -webkit-text-stroke: 1px #fff7fb;
-    text-shadow:
-        2px 2px 0 #ffffff,
-        4px 5px 0 #ffacd0,
-        0 9px 18px #e76a9c55;
+    color: #ff4c96;
+    text-shadow: 2px 2px white;
 }
 
-/* Подзаголовок */
-
-.subtitle {
-    margin: 8px 0 25px;
-    padding: 11px 22px;
-    border: 2px dashed #ff9fc5;
-    border-radius: 30px;
-    background: #fff4f9d9;
-    color: #d64f89;
-    font-size: 16px;
-    font-weight: 700;
-    text-align: center;
-    box-shadow: 0 5px 15px #e68bb322;
+.icon-button {
+    padding: 10px 12px;
+    border: 2px solid white;
+    border-radius: 15px;
+    background: #ffffffbb;
+    color: #cb477f;
+    font-weight: 800;
+    cursor: pointer;
 }
 
-/* Сообщение о победе */
+.stats {
+    width: 100%;
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 9px;
+    margin-bottom: 20px;
+}
 
-#result {
-    min-height: 35px;
-    margin-bottom: 18px;
-    color: #e83e85;
-    font-size: 20px;
+.stat {
+    padding: 12px 5px;
+    border: 2px solid white;
+    border-radius: 18px;
+    background: #ffffffbd;
+    text-align: center;
+}
+
+.stat-label {
+    display: block;
+    margin-bottom: 5px;
+    color: #bf7595;
+    font-size: 11px;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: .5px;
+}
+
+.stat-value {
+    color: #ce3f7c;
+    font-size: 21px;
     font-weight: 900;
-    text-align: center;
+    font-variant-numeric: tabular-nums;
 }
 
-/* Игровое поле */
+.progress-wrap {
+    width: 100%;
+    margin-bottom: 19px;
+}
+
+.progress-caption {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 7px;
+    color: #b65d87;
+    font-size: 12px;
+    font-weight: 800;
+}
+
+.progress {
+    height: 9px;
+    padding: 2px;
+    overflow: hidden;
+    border-radius: 20px;
+    background: #f8c9dd;
+}
+
+.progress-fill {
+    width: 0;
+    height: 100%;
+    border-radius: 20px;
+    background: linear-gradient(90deg, #ff9bc5, #ff4c96);
+    transition: width .3s;
+}
 
 .grid {
+    width: 100%;
     display: grid;
-    grid-template-columns: repeat(2, 100px);
-    grid-template-rows: repeat(2, 100px);
-    gap: 16px;
+    grid-template-columns: repeat(var(--columns, 4), minmax(0, 1fr));
+    gap: clamp(5px, 2vw, 11px);
+    perspective: 800px;
 }
 
-/* Карточки */
-
 .card {
-    width: 100px;
-    height: 100px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-
-    border: 3px solid #ff8fbd;
-    border-radius: 23px;
-
-    background: linear-gradient(
-        145deg,
-        #ffb9d7,
-        #ff80b4
-    );
-
+    position: relative;
+    width: 100%;
+    aspect-ratio: 1;
+    min-width: 0;
+    padding: 0;
+    border: 2px solid #ff8fbd;
+    border-radius: clamp(9px, 3vw, 19px);
+    background: linear-gradient(145deg, #ffb9d8, #ff75ad);
+    color: white;
+    font-size: clamp(20px, 7vw, 39px);
     box-shadow:
-        0 6px 0 #e9689d,
-        0 10px 18px #e98ab333,
-        inset 0 3px 8px #ffffffa8;
-
-    font-size: 42px;
+        0 4px 0 #e86a9f,
+        0 7px 12px #df619a20,
+        inset 0 3px 6px #ffffffa0;
     cursor: pointer;
-
-    transition:
-        transform .18s ease,
-        background .2s ease,
-        box-shadow .2s ease;
-
+    transition: transform .2s, background .2s, box-shadow .2s;
     -webkit-tap-highlight-color: transparent;
+    overflow: hidden;
 }
 
 .card::before {
     content: "♡";
-    color: #fff0f7;
-    font-size: 51px;
-    font-weight: 400;
+    position: absolute;
+    inset: 0;
+    display: grid;
+    place-items: center;
+    color: #fff1f8;
+    font-size: 1.25em;
+    text-shadow: 0 2px 4px #e75a9733;
 }
 
-.card:hover:not(:disabled) {
-    transform: translateY(-3px);
+.card:not(:disabled):hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 0 #e86a9f, 0 10px 16px #df619a30;
 }
 
 .card:active:not(:disabled) {
@@ -218,18 +382,12 @@ body {
 
 .card.open,
 .card.matched {
-    background: linear-gradient(
-        145deg,
-        #fff7fb,
-        #ffd5e7
-    );
-
-    border-color: #ff71aa;
-
+    background: linear-gradient(145deg, #fffaff, #ffd7e8);
+    border-color: #ff72aa;
     box-shadow:
-        0 5px 0 #ed9abe,
-        0 8px 16px #e98ab322,
-        inset 0 3px 8px #ffffff;
+        0 4px 0 #efa0c0,
+        inset 0 2px 5px white;
+    animation: pop .22s ease;
 }
 
 .card.open::before,
@@ -238,104 +396,183 @@ body {
 }
 
 .card.matched {
+    background: linear-gradient(145deg, #ffe5f0, #ffc3dc);
+    border-color: #f783b4;
     cursor: default;
-    border-color: #f58ab8;
 }
 
-/* Кнопка перезапуска */
-
-#restart {
-    margin-top: 30px;
-    padding: 14px 25px;
-
-    border: 3px solid #ff9fc5;
-    border-radius: 35px;
-
-    background: linear-gradient(
-        135deg,
-        #ffb9d7,
-        #ff73ac
-    );
-
-    color: #ffffff;
-    font-family: inherit;
-    font-size: 16px;
-    font-weight: 900;
-
-    box-shadow:
-        0 6px 0 #e75e98,
-        0 10px 18px #e98ab333,
-        inset 0 3px 5px #ffffff77;
-
-    cursor: pointer;
-    transition: transform .15s ease;
+.card.matched::after {
+    content: "✓";
+    position: absolute;
+    right: 4px;
+    top: 3px;
+    width: 17px;
+    height: 17px;
+    display: grid;
+    place-items: center;
+    border-radius: 50%;
+    background: #ff76ad;
+    color: white;
+    font-size: 10px;
 }
 
-#restart:hover {
-    transform: translateY(-2px);
+.game-footer {
+    width: 100%;
+    margin-top: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    flex-wrap: wrap;
 }
 
-#restart:active {
-    transform: translateY(3px);
-    box-shadow: 0 2px 0 #e75e98;
-}
-
-/* Нижняя надпись */
-
-.hint {
-    margin-top: 22px;
-    color: #d45d91;
-    font-size: 15px;
-    font-weight: 800;
+.footer-note {
+    margin-top: 17px;
+    color: #c06b91;
+    font-size: 12px;
     text-align: center;
-    letter-spacing: .5px;
 }
 
-.decoration {
-    margin-top: 13px;
-    color: #ff78ad;
-    font-size: 23px;
-    letter-spacing: 8px;
+/* Экран победы */
+
+.win-screen {
+    position: fixed;
+    z-index: 10;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    background: #9e386b66;
+    backdrop-filter: blur(8px);
+    overflow: hidden;
 }
 
-/* Маленькие экраны */
+.win-panel {
+    position: relative;
+    z-index: 2;
+    width: 100%;
+    max-width: 390px;
+    padding: 30px 24px;
+    border: 3px solid white;
+    border-radius: 32px;
+    background: linear-gradient(145deg, #fff9fc, #ffe0ed);
+    box-shadow: 0 25px 70px #6d174333;
+    text-align: center;
+    animation: appear .45s ease both, glow 2.5s infinite;
+}
 
-@media (max-width: 360px) {
+.trophy {
+    margin-bottom: 10px;
+    font-size: 70px;
+    animation: pop .6s ease;
+}
+
+.win-title {
+    margin: 0 0 10px;
+    color: #f04c91;
+    font-size: 31px;
+    font-weight: 900;
+}
+
+.win-message {
+    margin: 0 0 20px;
+    color: #b65b85;
+    line-height: 1.6;
+}
+
+.win-stats {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+    margin-bottom: 23px;
+}
+
+.win-stat {
+    padding: 13px;
+    border: 1px solid #ffc2db;
+    border-radius: 17px;
+    background: #fff9fc;
+}
+
+.win-stat strong {
+    display: block;
+    margin-bottom: 4px;
+    color: #d23f7e;
+    font-size: 24px;
+}
+
+.win-stat span {
+    color: #bd7596;
+    font-size: 12px;
+}
+
+.win-panel .secondary {
+    width: 100%;
+    margin-top: 12px;
+}
+
+.confetti {
+    position: absolute;
+    z-index: 1;
+    top: -20px;
+    width: 9px;
+    height: 15px;
+    border-radius: 3px;
+    animation: confettiFall linear forwards;
+    pointer-events: none;
+}
+
+@media (min-width: 700px) {
     .app {
-        padding: 30px 12px;
+        min-height: 100vh;
+    }
+}
+
+@media (max-width: 370px) {
+    .app {
+        padding: 22px 12px;
     }
 
-    .grid {
-        grid-template-columns: repeat(2, 85px);
-        grid-template-rows: repeat(2, 85px);
-        gap: 13px;
+    .panel {
+        padding: 22px 13px;
+    }
+
+    .levels {
+        gap: 6px;
+    }
+
+    .level-button {
+        padding: 13px 2px;
+    }
+
+    .level-button strong {
+        font-size: 20px;
+    }
+
+    .level-button small {
+        font-size: 10px;
+    }
+
+    .small-logo {
+        font-size: 24px;
+    }
+
+    .icon-button {
+        padding: 9px;
+        font-size: 12px;
     }
 
     .card {
-        width: 85px;
-        height: 85px;
-        border-radius: 19px;
-        font-size: 36px;
-    }
-
-    .sticker {
-        font-size: 30px;
-    }
-
-    .subtitle {
-        font-size: 14px;
-        padding: 9px 14px;
+        border-width: 1.5px;
     }
 }
 
 @media (prefers-reduced-motion: reduce) {
-    .sticker {
-        animation: none;
-    }
-
-    .card,
-    #restart {
-        transition: none;
+    *, *::before, *::after {
+        animation-duration: .01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: .01ms !important;
     }
 }
 </style>
@@ -343,197 +580,520 @@ body {
 
 <body>
 
-<div class="app">
+<div class="decor d1">🎀</div>
+<div class="decor d2">💗</div>
+<div class="decor d3">✧</div>
+<div class="decor d4">♡</div>
+<div class="decor d5">🌸</div>
+<div class="decor d6">✨</div>
 
-    <!-- Декоративные стикеры без животных -->
-    <div class="sticker sticker-1">🎀</div>
-    <div class="sticker sticker-2">💗</div>
-    <div class="sticker sticker-3">✧</div>
-    <div class="sticker sticker-4">♡</div>
-    <div class="sticker sticker-5">🌸</div>
-    <div class="sticker sticker-6">💝</div>
-    <div class="sticker sticker-7">✨</div>
-    <div class="sticker sticker-8">💕</div>
+<main class="app">
 
-    <!-- Заголовок -->
-    <h1 class="game-title">Twindle ♡</h1>
+    <!-- СТАРТОВОЕ МЕНЮ -->
+    <section id="home" style="width:100%">
 
-    <div class="subtitle">
-        ♡ Найди одинаковые карточки ♡
+        <h1 class="logo">Twindle <span>♡</span></h1>
+
+        <div class="tagline">✧ Играй на удовольствие ✧</div>
+
+        <div class="panel">
+            <h2 class="panel-title">Твой розовый мир 💗</h2>
+
+            <p class="panel-text">
+                Расслабься, найди одинаковые пары
+                и собери все красивые карточки.
+                Выбирай уровень и начинай!
+            </p>
+
+            <h3 class="panel-title"
+                style="font-size:16px;margin-bottom:14px">
+                Выбери сложность
+            </h3>
+
+            <div class="levels">
+                <button class="level-button active"
+                        data-level="4" aria-pressed="true">
+                    <strong>4 × 4</strong>
+                    <small>8 пар<br>Легко 🌸</small>
+                </button>
+
+                <button class="level-button"
+                        data-level="5" aria-pressed="false">
+                    <strong>5 × 5</strong>
+                    <small>12 пар<br>Средне 🎀</small>
+                </button>
+
+                <button class="level-button"
+                        data-level="6" aria-pressed="false">
+                    <strong>6 × 6</strong>
+                    <small>18 пар<br>Сложно 💎</small>
+                </button>
+            </div>
+
+            <button class="primary" id="start">
+                Играть ♡
+            </button>
+        </div>
+
+        <div class="footer-note">
+            Made with love · Twindle ♡
+        </div>
+    </section>
+
+    <!-- ИГРОВОЙ ЭКРАН -->
+    <section id="game" class="hidden" style="width:100%">
+
+        <div class="game-header">
+            <button class="icon-button" id="back">← Меню</button>
+            <div class="small-logo">Twindle ♡</div>
+            <button class="icon-button" id="restart">↻ Заново</button>
+        </div>
+
+        <div class="tagline" id="level-label">🌸 Лёгкий уровень</div>
+
+        <div class="stats">
+            <div class="stat">
+                <span class="stat-label">Время</span>
+                <span class="stat-value" id="timer">00:00</span>
+            </div>
+
+            <div class="stat">
+                <span class="stat-label">Ходы</span>
+                <span class="stat-value" id="moves">0</span>
+            </div>
+
+            <div class="stat">
+                <span class="stat-label">Найдено</span>
+                <span class="stat-value" id="pairs">0/8</span>
+            </div>
+        </div>
+
+        <div class="progress-wrap">
+            <div class="progress-caption">
+                <span>Твой прогресс 💗</span>
+                <span id="progress-text">0%</span>
+            </div>
+
+            <div class="progress">
+                <div class="progress-fill" id="progress-fill"></div>
+            </div>
+        </div>
+
+        <div class="grid" id="grid"></div>
+
+        <div class="game-footer">
+            <button class="secondary" id="hint">♡ Подсказка</button>
+        </div>
+
+        <div class="footer-note">
+            Не спеши — наслаждайся игрой ✨
+        </div>
+    </section>
+
+</main>
+
+<!-- ПОБЕДА -->
+<section id="win-screen" class="win-screen hidden"
+         role="dialog" aria-modal="true"
+         aria-labelledby="win-title">
+
+    <div class="win-panel">
+        <div class="trophy" id="trophy">👑</div>
+
+        <h2 class="win-title" id="win-title">
+            Ты умничка!
+        </h2>
+
+        <p class="win-message" id="win-message">
+            Все пары найдены!
+        </p>
+
+        <div class="win-stats">
+            <div class="win-stat">
+                <strong id="final-time">00:00</strong>
+                <span>Твоё время ⏱</span>
+            </div>
+
+            <div class="win-stat">
+                <strong id="final-moves">0</strong>
+                <span>Всего ходов 🎀</span>
+            </div>
+        </div>
+
+        <button class="primary" id="next-level">
+            Следующий уровень ✨
+        </button>
+
+        <button class="secondary" id="play-again">
+            Играть ещё раз ♡
+        </button>
+
+        <button class="secondary" id="win-home">
+            Вернуться в меню
+        </button>
     </div>
-
-    <!-- Сообщение о победе -->
-    <div id="result" aria-live="polite"></div>
-
-    <!-- Игровые карточки -->
-    <div class="grid">
-        <button class="card" data-index="0"
-                aria-label="Карточка 1"></button>
-
-        <button class="card" data-index="1"
-                aria-label="Карточка 2"></button>
-
-        <button class="card" data-index="2"
-                aria-label="Карточка 3"></button>
-
-        <button class="card" data-index="3"
-                aria-label="Карточка 4"></button>
-    </div>
-
-    <!-- Перезапуск -->
-    <button id="restart">
-        🎀 Начать заново 🎀
-    </button>
-
-    <div class="hint">
-        Найди свою пару ♡
-    </div>
-
-    <div class="decoration">
-        ── ♥ ──
-    </div>
-
-</div>
+</section>
 
 <script>
 const allEmojis = [
-    "🎀", "💗", "🌸", "🦋",
-    "💎", "🪷", "💕", "✨",
-    "🌷", "💖", "🩷", "🪄",
-    "💐", "⭐", "🫧", "👑"
+    "🎀", "💗", "🌸", "🦋", "💎", "🪷",
+    "💕", "✨", "🌷", "💖", "🩷", "🪄",
+    "💐", "⭐", "🫧", "👑", "💝", "🌺",
+    "🪻", "💞", "🌼", "💫", "🩰", "🎐",
+    "🪞", "💟", "🌹", "🪽"
 ];
 
-const cards = [...document.querySelectorAll(".card")];
-const result = document.getElementById("result");
-const restart = document.getElementById("restart");
+const home = document.getElementById("home");
+const game = document.getElementById("game");
+const grid = document.getElementById("grid");
+const winScreen = document.getElementById("win-screen");
 
+const timerElement = document.getElementById("timer");
+const movesElement = document.getElementById("moves");
+const pairsElement = document.getElementById("pairs");
+const progressText = document.getElementById("progress-text");
+const progressFill = document.getElementById("progress-fill");
+
+const levelButtons = [
+    ...document.querySelectorAll(".level-button")
+];
+
+let level = 4;
+let pairCount = 8;
 let emojis = [];
 let opened = [];
-let matched = [];
+let matched = new Set();
+let moves = 0;
+let seconds = 0;
+let timerInterval = null;
+let started = false;
+let lockBoard = false;
+let hintUsed = false;
 
-/* Перемешивание карточек */
 function shuffle(array) {
-    const a = [...array];
+    const result = [...array];
 
-    for (let i = a.length - 1; i > 0; i--) {
+    for (let i = result.length - 1; i > 0; i--) {
         const j = Math.floor(Math.random() * (i + 1));
-        [a[i], a[j]] = [a[j], a[i]];
+        [result[i], result[j]] = [result[j], result[i]];
     }
 
-    return a;
+    return result;
 }
 
-/* Начало новой игры */
-function newGame() {
-    result.textContent = "";
-    opened = [];
-    matched = [];
+function formatTime(totalSeconds) {
+    const minutes = Math.floor(totalSeconds / 60);
+    const secs = totalSeconds % 60;
 
-    // Выбираем два случайных символа
-    const selected = shuffle(allEmojis).slice(0, 2);
+    return String(minutes).padStart(2, "0") + ":" +
+           String(secs).padStart(2, "0");
+}
 
-    // Создаём две пары и перемешиваем их
-    emojis = shuffle([
-        selected[0],
-        selected[0],
-        selected[1],
-        selected[1]
-    ]);
+function levelName(n) {
+    if (n === 4) return "🌸 Лёгкий уровень";
+    if (n === 5) return "🎀 Средний уровень";
+    return "💎 Сложный уровень";
+}
 
-    cards.forEach((card, index) => {
-        card.textContent = "";
-        card.className = "card";
-        card.disabled = false;
-        card.setAttribute("aria-label", `Карточка ${index + 1}`);
+function updateLevelButtons() {
+    levelButtons.forEach(button => {
+        const selected = Number(button.dataset.level) === level;
+
+        button.classList.toggle("active", selected);
+        button.setAttribute("aria-pressed", String(selected));
     });
 }
 
-/* Закрытие несовпавших карточек */
-function hideOpenedCards() {
-    opened.forEach(index => {
-        cards[index].textContent = "";
-        cards[index].classList.remove("open");
-        cards[index].setAttribute(
-            "aria-label",
-            `Карточка ${index + 1}`
-        );
-    });
-
-    opened = [];
-}
-
-/* Нажатие на карточку */
-function tapCard(index) {
-    // Нельзя нажимать на найденную пару
-    if (matched.includes(index)) return;
-
-    // Нельзя повторно открывать ту же карточку
-    if (opened.includes(index)) return;
-
-    // Если уже открыты две карточки,
-    // закрываем их перед следующим выбором
-    if (opened.length === 2) {
-        hideOpenedCards();
-    }
-
-    // Открываем выбранную карточку
-    cards[index].textContent = emojis[index];
-    cards[index].classList.add("open");
-    cards[index].setAttribute(
-        "aria-label",
-        `Карточка ${index + 1}: ${emojis[index]}`
-    );
-
-    opened.push(index);
-
-    // Проверяем пару
-    if (opened.length === 2) {
-        const [a, b] = opened;
-
-        if (emojis[a] === emojis[b]) {
-            matched.push(a, b);
-
-            cards[a].classList.add("matched");
-            cards[b].classList.add("matched");
-
-            cards[a].setAttribute(
-                "aria-label",
-                `Найдена пара: ${emojis[a]}`
-            );
-
-            cards[b].setAttribute(
-                "aria-label",
-                `Найдена пара: ${emojis[b]}`
-            );
-
-            opened = [];
-
-            // Победа, когда найдены обе пары
-            if (matched.length === cards.length) {
-                result.textContent = "Ура! Ты победила! 👑💗";
-
-                cards.forEach(card => {
-                    card.disabled = true;
-                });
-            }
-        }
-    }
-}
-
-/* Обработчики нажатий */
-cards.forEach(card => {
-    card.addEventListener("click", () => {
-        tapCard(Number(card.dataset.index));
+levelButtons.forEach(button => {
+    button.addEventListener("click", () => {
+        level = Number(button.dataset.level);
+        updateLevelButtons();
     });
 });
 
-/* Перезапуск игры */
-restart.addEventListener("click", newGame);
+function stopTimer() {
+    if (timerInterval !== null) {
+        clearInterval(timerInterval);
+        timerInterval = null;
+    }
+}
 
-/* Запускаем игру */
-newGame();
+function startTimer() {
+    if (timerInterval !== null || !started) return;
+
+    timerInterval = setInterval(() => {
+        seconds++;
+        timerElement.textContent = formatTime(seconds);
+    }, 1000);
+}
+
+function updateStats() {
+    const foundPairs = matched.size / 2;
+    const percent = Math.round(foundPairs / pairCount * 100);
+
+    movesElement.textContent = moves;
+    pairsElement.textContent = `${foundPairs}/${pairCount}`;
+    progressText.textContent = `${percent}%`;
+    progressFill.style.width = `${percent}%`;
+}
+
+function showHome() {
+    stopTimer();
+    winScreen.classList.add("hidden");
+    game.classList.add("hidden");
+    home.classList.remove("hidden");
+    started = false;
+    lockBoard = false;
+    updateLevelButtons();
+}
+
+function startGame() {
+    stopTimer();
+
+    pairCount = level === 4 ? 8 : level === 5 ? 12 : 18;
+
+    emojis = shuffle(allEmojis).slice(0, pairCount);
+    emojis = shuffle([...emojis, ...emojis]);
+
+    // На поле 5×5 одна специальная карточка без пары.
+    // Это делает нечётное поле полноценным и проходимым.
+    if (level === 5) {
+        emojis.push("🪄");
+        emojis = shuffle(emojis);
+    }
+
+    opened = [];
+    matched = new Set();
+    moves = 0;
+    seconds = 0;
+    started = false;
+    lockBoard = false;
+    hintUsed = false;
+
+    timerElement.textContent = "00:00";
+    document.getElementById("level-label").textContent = levelName(level);
+
+    home.classList.add("hidden");
+    winScreen.classList.add("hidden");
+    game.classList.remove("hidden");
+
+    grid.style.setProperty("--columns", level);
+    grid.innerHTML = "";
+
+    emojis.forEach((emoji, index) => {
+        const card = document.createElement("button");
+
+        card.className = "card";
+        card.type = "button";
+        card.dataset.index = index;
+        card.setAttribute("aria-label", `Карточка ${index + 1}`);
+
+        card.addEventListener("click", () => flipCard(index));
+
+        grid.appendChild(card);
+    });
+
+    updateStats();
+}
+
+function flipCard(index) {
+    if (lockBoard || matched.has(index) || opened.includes(index)) {
+        return;
+    }
+
+    if (!started) {
+        started = true;
+        startTimer();
+    }
+
+    const card = grid.children[index];
+
+    card.textContent = emojis[index];
+    card.classList.add("open");
+    card.setAttribute("aria-label", emojis[index]);
+
+    opened.push(index);
+
+    if (opened.length !== 2) return;
+
+    moves++;
+    updateStats();
+
+    const [first, second] = opened;
+    const firstEmoji = emojis[first];
+    const secondEmoji = emojis[second];
+
+    if (firstEmoji === secondEmoji) {
+        matched.add(first);
+        matched.add(second);
+
+        grid.children[first].classList.add("matched");
+        grid.children[second].classList.add("matched");
+
+        grid.children[first].disabled = true;
+        grid.children[second].disabled = true;
+
+        opened = [];
+        updateStats();
+
+        if (matched.size === pairCount * 2) {
+            finishGame();
+        }
+
+        return;
+    }
+
+    lockBoard = true;
+
+    // Несовпавшие карточки закрываются,
+    // когда игрок выбирает следующую карточку.
+    // Дополнительная задержка помогает увидеть символы.
+    setTimeout(() => {
+        opened.forEach(cardIndex => {
+            const currentCard = grid.children[cardIndex];
+
+            if (currentCard && !matched.has(cardIndex)) {
+                currentCard.textContent = "";
+                currentCard.classList.remove("open");
+                currentCard.setAttribute(
+                    "aria-label",
+                    `Карточка ${cardIndex + 1}`
+                );
+            }
+        });
+
+        opened = [];
+        lockBoard = false;
+    }, 650);
+}
+
+function makeConfetti() {
+    const colors = [
+        "#ff4f98", "#ffc1dc", "#ffffff",
+        "#ff86b9", "#e8a8ff", "#ffdf80"
+    ];
+
+    for (let i = 0; i < 75; i++) {
+        const piece = document.createElement("div");
+
+        piece.className = "confetti";
+        piece.style.left = Math.random() * 100 + "%";
+        piece.style.background =
+            colors[Math.floor(Math.random() * colors.length)];
+        piece.style.animationDuration =
+            (2.2 + Math.random() * 3) + "s";
+        piece.style.animationDelay =
+            (Math.random() * 1.5) + "s";
+        piece.style.borderRadius =
+            Math.random() > .5 ? "50%" : "3px";
+
+        winScreen.appendChild(piece);
+
+        setTimeout(() => piece.remove(), 6500);
+    }
+}
+
+function finishGame() {
+    stopTimer();
+    started = false;
+
+    document.getElementById("final-time").textContent =
+        formatTime(seconds);
+
+    document.getElementById("final-moves").textContent = moves;
+
+    const trophies = ["🌸", "👑", "💎"];
+
+    document.getElementById("trophy").textContent =
+        level === 4 ? trophies[0] :
+        level === 5 ? trophies[1] : trophies[2];
+
+    document.getElementById("win-title").textContent =
+        level === 6 ? "Ты королева Twindle!" : "Ты умничка!";
+
+    document.getElementById("win-message").textContent =
+        level === 4
+            ? "Первый уровень пройден! Ты прекрасно справилась 💗"
+            : level === 5
+                ? "Средний уровень пройден! Твоя память великолепна 🎀"
+                : "Ты прошла самый сложный уровень! Ты звезда! ✨";
+
+    const nextButton = document.getElementById("next-level");
+
+    if (level === 6) {
+        nextButton.textContent = "Сыграть ещё раз 👑";
+    } else {
+        nextButton.textContent = "Следующий уровень ✨";
+    }
+
+    winScreen.classList.remove("hidden");
+    makeConfetti();
+}
+
+document.getElementById("start").addEventListener("click", startGame);
+document.getElementById("restart").addEventListener("click", startGame);
+document.getElementById("back").addEventListener("click", showHome);
+document.getElementById("win-home").addEventListener("click", showHome);
+document.getElementById("play-again").addEventListener("click", startGame);
+
+document.getElementById("next-level").addEventListener("click", () => {
+    if (level === 4) {
+        level = 5;
+    } else if (level === 5) {
+        level = 6;
+    } else {
+        level = 4;
+    }
+
+    updateLevelButtons();
+    startGame();
+});
+
+document.getElementById("hint").addEventListener("click", () => {
+    if (lockBoard) return;
+
+    const unmatched = emojis
+        .map((emoji, index) => ({ emoji, index }))
+        .filter(item =>
+            !matched.has(item.index) &&
+            !opened.includes(item.index)
+        );
+
+    if (unmatched.length === 0) return;
+
+    // Подсказка показывает один символ,
+    // но не засчитывает его как найденную пару.
+    const choice = unmatched[
+        Math.floor(Math.random() * unmatched.length)
+    ];
+
+    const card = grid.children[choice.index];
+
+    card.textContent = choice.emoji;
+    card.classList.add("open");
+
+    if (!started) {
+        started = true;
+        startTimer();
+    }
+
+    setTimeout(() => {
+        if (
+            !matched.has(choice.index) &&
+            !opened.includes(choice.index)
+        ) {
+            card.textContent = "";
+            card.classList.remove("open");
+            card.setAttribute(
+                "aria-label",
+                `Карточка ${choice.index + 1}`
+            );
+        }
+    }, 900);
+});
+
+updateLevelButtons();
 </script>
 
 </body>
 </html>
-```
