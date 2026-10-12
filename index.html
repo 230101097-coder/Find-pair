@@ -1,109 +1,408 @@
+```html
 <!DOCTYPE html>
 <html lang="ru">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Find Pair</title>
+
+<title>Twindle ♡</title>
+
 <style>
-    * { box-sizing: border-box; }
-    body {
-        margin: 0;
-        min-height: 100vh;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        background: #ffffff;
-        font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", Arial, sans-serif;
-        color: #222;
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-family: "Trebuchet MS", Arial, sans-serif;
+    color: #c43f79;
+    background:
+        radial-gradient(circle at 10% 15%, #ffe7f1 0, transparent 30%),
+        radial-gradient(circle at 90% 80%, #ffb6d3 0, transparent 35%),
+        linear-gradient(145deg, #ffd9e9, #fff2f7, #ffc4dc);
+    overflow-x: hidden;
+}
+
+.app {
+    position: relative;
+    width: min(100%, 520px);
+    min-height: 100vh;
+    padding: 40px 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    isolation: isolate;
+}
+
+/* Декоративные стикеры */
+
+.sticker {
+    position: absolute;
+    z-index: -1;
+    pointer-events: none;
+    user-select: none;
+    filter: drop-shadow(0 5px 5px #e77ba633);
+    animation: float 3.5s ease-in-out infinite;
+}
+
+.sticker-1 {
+    top: 7%;
+    left: 5%;
+    font-size: 55px;
+    transform: rotate(-15deg);
+}
+
+.sticker-2 {
+    top: 12%;
+    right: 5%;
+    font-size: 42px;
+    animation-delay: .6s;
+}
+
+.sticker-3 {
+    top: 36%;
+    left: 4%;
+    font-size: 35px;
+    animation-delay: 1s;
+}
+
+.sticker-4 {
+    top: 48%;
+    right: 5%;
+    font-size: 38px;
+    animation-delay: .4s;
+}
+
+.sticker-5 {
+    bottom: 15%;
+    left: 5%;
+    font-size: 52px;
+    animation-delay: 1.2s;
+}
+
+.sticker-6 {
+    bottom: 12%;
+    right: 5%;
+    font-size: 48px;
+    animation-delay: .8s;
+}
+
+.sticker-7 {
+    top: 25%;
+    right: 12%;
+    font-size: 23px;
+}
+
+.sticker-8 {
+    bottom: 30%;
+    left: 8%;
+    font-size: 25px;
+}
+
+@keyframes float {
+    0%, 100% {
+        translate: 0 0;
     }
+    50% {
+        translate: 0 -9px;
+    }
+}
+
+/* Название игры */
+
+.game-title {
+    margin: 0 0 12px;
+    font-size: clamp(43px, 12vw, 60px);
+    font-weight: 900;
+    font-style: italic;
+    letter-spacing: 1px;
+    line-height: 1.2;
+    text-align: center;
+    color: #ff4f98;
+    -webkit-text-stroke: 1px #fff7fb;
+    text-shadow:
+        2px 2px 0 #ffffff,
+        4px 5px 0 #ffacd0,
+        0 9px 18px #e76a9c55;
+}
+
+/* Подзаголовок */
+
+.subtitle {
+    margin: 8px 0 25px;
+    padding: 11px 22px;
+    border: 2px dashed #ff9fc5;
+    border-radius: 30px;
+    background: #fff4f9d9;
+    color: #d64f89;
+    font-size: 16px;
+    font-weight: 700;
+    text-align: center;
+    box-shadow: 0 5px 15px #e68bb322;
+}
+
+/* Сообщение о победе */
+
+#result {
+    min-height: 35px;
+    margin-bottom: 18px;
+    color: #e83e85;
+    font-size: 20px;
+    font-weight: 900;
+    text-align: center;
+}
+
+/* Игровое поле */
+
+.grid {
+    display: grid;
+    grid-template-columns: repeat(2, 100px);
+    grid-template-rows: repeat(2, 100px);
+    gap: 16px;
+}
+
+/* Карточки */
+
+.card {
+    width: 100px;
+    height: 100px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    border: 3px solid #ff8fbd;
+    border-radius: 23px;
+
+    background: linear-gradient(
+        145deg,
+        #ffb9d7,
+        #ff80b4
+    );
+
+    box-shadow:
+        0 6px 0 #e9689d,
+        0 10px 18px #e98ab333,
+        inset 0 3px 8px #ffffffa8;
+
+    font-size: 42px;
+    cursor: pointer;
+
+    transition:
+        transform .18s ease,
+        background .2s ease,
+        box-shadow .2s ease;
+
+    -webkit-tap-highlight-color: transparent;
+}
+
+.card::before {
+    content: "♡";
+    color: #fff0f7;
+    font-size: 51px;
+    font-weight: 400;
+}
+
+.card:hover:not(:disabled) {
+    transform: translateY(-3px);
+}
+
+.card:active:not(:disabled) {
+    transform: scale(.94);
+}
+
+.card.open,
+.card.matched {
+    background: linear-gradient(
+        145deg,
+        #fff7fb,
+        #ffd5e7
+    );
+
+    border-color: #ff71aa;
+
+    box-shadow:
+        0 5px 0 #ed9abe,
+        0 8px 16px #e98ab322,
+        inset 0 3px 8px #ffffff;
+}
+
+.card.open::before,
+.card.matched::before {
+    content: none;
+}
+
+.card.matched {
+    cursor: default;
+    border-color: #f58ab8;
+}
+
+/* Кнопка перезапуска */
+
+#restart {
+    margin-top: 30px;
+    padding: 14px 25px;
+
+    border: 3px solid #ff9fc5;
+    border-radius: 35px;
+
+    background: linear-gradient(
+        135deg,
+        #ffb9d7,
+        #ff73ac
+    );
+
+    color: #ffffff;
+    font-family: inherit;
+    font-size: 16px;
+    font-weight: 900;
+
+    box-shadow:
+        0 6px 0 #e75e98,
+        0 10px 18px #e98ab333,
+        inset 0 3px 5px #ffffff77;
+
+    cursor: pointer;
+    transition: transform .15s ease;
+}
+
+#restart:hover {
+    transform: translateY(-2px);
+}
+
+#restart:active {
+    transform: translateY(3px);
+    box-shadow: 0 2px 0 #e75e98;
+}
+
+/* Нижняя надпись */
+
+.hint {
+    margin-top: 22px;
+    color: #d45d91;
+    font-size: 15px;
+    font-weight: 800;
+    text-align: center;
+    letter-spacing: .5px;
+}
+
+.decoration {
+    margin-top: 13px;
+    color: #ff78ad;
+    font-size: 23px;
+    letter-spacing: 8px;
+}
+
+/* Маленькие экраны */
+
+@media (max-width: 360px) {
     .app {
-        width: min(100%, 520px);
-        min-height: 100vh;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-        padding: 40px 24px;
+        padding: 30px 12px;
     }
-    h1 {
-        margin: 0 0 28px;
-        font-size: 28px;
-        font-weight: 700;
-        color: #222;
-    }
-    #result {
-        height: 34px;
-        margin-bottom: 18px;
-        font-size: 24px;
-        font-weight: 700;
-        color: #22c55e;
-    }
+
     .grid {
-        display: grid;
-        grid-template-columns: repeat(2, 88px);
-        grid-template-rows: repeat(2, 88px);
-        gap: 14px;
+        grid-template-columns: repeat(2, 85px);
+        grid-template-rows: repeat(2, 85px);
+        gap: 13px;
     }
+
     .card {
-        width: 88px;
-        height: 88px;
-        border: 0;
-        border-radius: 6px;
-        background: #d1d1d6;
-        font-size: 42px;
-        cursor: pointer;
-        -webkit-tap-highlight-color: transparent;
-        transition: transform .12s ease, background .12s ease;
+        width: 85px;
+        height: 85px;
+        border-radius: 19px;
+        font-size: 36px;
     }
-    .card:active { transform: scale(.96); }
-    .card.open, .card.matched {
-        background: #f1f1f3;
+
+    .sticker {
+        font-size: 30px;
     }
-    .card.matched {
-        cursor: default;
+
+    .subtitle {
+        font-size: 14px;
+        padding: 9px 14px;
     }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .sticker {
+        animation: none;
+    }
+
+    .card,
     #restart {
-        margin-top: 24px;
-        padding: 7px 14px;
-        border: 0;
-        border-radius: 5px;
-        background: #e9e9ed;
-        color: #1677d2;
-        font-size: 16px;
-        cursor: pointer;
+        transition: none;
     }
-    .hint {
-        margin-top: 18px;
-        color: #8a8a8f;
-        font-size: 13px;
-        text-align: center;
-    }
-    @media (min-width: 700px) {
-        .app {
-            min-height: 700px;
-            max-height: 900px;
-        }
-    }
+}
 </style>
 </head>
-<body>
-<div class="app">
-    <h1>Find Pair</h1>
-    <div id="result"></div>
 
-    <div class="grid">
-        <button class="card" data-index="0" aria-label="Card 1"></button>
-        <button class="card" data-index="1" aria-label="Card 2"></button>
-        <button class="card" data-index="2" aria-label="Card 3"></button>
-        <button class="card" data-index="3" aria-label="Card 4"></button>
+<body>
+
+<div class="app">
+
+    <!-- Декоративные стикеры без животных -->
+    <div class="sticker sticker-1">🎀</div>
+    <div class="sticker sticker-2">💗</div>
+    <div class="sticker sticker-3">✧</div>
+    <div class="sticker sticker-4">♡</div>
+    <div class="sticker sticker-5">🌸</div>
+    <div class="sticker sticker-6">💝</div>
+    <div class="sticker sticker-7">✨</div>
+    <div class="sticker sticker-8">💕</div>
+
+    <!-- Заголовок -->
+    <h1 class="game-title">Twindle ♡</h1>
+
+    <div class="subtitle">
+        ♡ Найди одинаковые карточки ♡
     </div>
 
-    <button id="restart">Қайтадан баста</button>
-    <div class="hint">Ұқсастықты тап</div>
+    <!-- Сообщение о победе -->
+    <div id="result" aria-live="polite"></div>
+
+    <!-- Игровые карточки -->
+    <div class="grid">
+        <button class="card" data-index="0"
+                aria-label="Карточка 1"></button>
+
+        <button class="card" data-index="1"
+                aria-label="Карточка 2"></button>
+
+        <button class="card" data-index="2"
+                aria-label="Карточка 3"></button>
+
+        <button class="card" data-index="3"
+                aria-label="Карточка 4"></button>
+    </div>
+
+    <!-- Перезапуск -->
+    <button id="restart">
+        🎀 Начать заново 🎀
+    </button>
+
+    <div class="hint">
+        Найди свою пару ♡
+    </div>
+
+    <div class="decoration">
+        ── ♥ ──
+    </div>
+
 </div>
 
 <script>
-const allEmojis = ["🐱","🐶","🦊","🐼","🐸","🐵","🦄","🐯"];
+const allEmojis = [
+    "🎀", "💗", "🌸", "🦋",
+    "💎", "🪷", "💕", "✨",
+    "🌷", "💖", "🩷", "🪄",
+    "💐", "⭐", "🫧", "👑"
+];
+
 const cards = [...document.querySelectorAll(".card")];
 const result = document.getElementById("result");
 const restart = document.getElementById("restart");
@@ -112,80 +411,129 @@ let emojis = [];
 let opened = [];
 let matched = [];
 
+/* Перемешивание карточек */
 function shuffle(array) {
     const a = [...array];
+
     for (let i = a.length - 1; i > 0; i--) {
         const j = Math.floor(Math.random() * (i + 1));
         [a[i], a[j]] = [a[j], a[i]];
     }
+
     return a;
 }
 
+/* Начало новой игры */
 function newGame() {
     result.textContent = "";
     opened = [];
     matched = [];
 
+    // Выбираем два случайных символа
     const selected = shuffle(allEmojis).slice(0, 2);
-    emojis = shuffle([selected[0], selected[0], selected[1], selected[1]]);
 
-    cards.forEach(card => {
+    // Создаём две пары и перемешиваем их
+    emojis = shuffle([
+        selected[0],
+        selected[0],
+        selected[1],
+        selected[1]
+    ]);
+
+    cards.forEach((card, index) => {
         card.textContent = "";
         card.className = "card";
         card.disabled = false;
+        card.setAttribute("aria-label", `Карточка ${index + 1}`);
     });
 }
 
-function hideFirstTwo() {
-    if (opened.length >= 2) {
-        cards[opened[0]].textContent = "";
-        cards[opened[1]].textContent = "";
-        cards[opened[0]].classList.remove("open");
-        cards[opened[1]].classList.remove("open");
-        opened = opened.slice(2);
-    }
+/* Закрытие несовпавших карточек */
+function hideOpenedCards() {
+    opened.forEach(index => {
+        cards[index].textContent = "";
+        cards[index].classList.remove("open");
+        cards[index].setAttribute(
+            "aria-label",
+            `Карточка ${index + 1}`
+        );
+    });
+
+    opened = [];
 }
 
+/* Нажатие на карточку */
 function tapCard(index) {
+    // Нельзя нажимать на найденную пару
     if (matched.includes(index)) return;
 
-    // According to the task: after two unequal cards,
-    // pressing the third card hides the first two and keeps the third open.
-    if (opened.length === 2) {
-        if (emojis[opened[0]] === emojis[opened[1]]) {
-            return;
-        }
-        hideFirstTwo();
-    }
-
+    // Нельзя повторно открывать ту же карточку
     if (opened.includes(index)) return;
 
+    // Если уже открыты две карточки,
+    // закрываем их перед следующим выбором
+    if (opened.length === 2) {
+        hideOpenedCards();
+    }
+
+    // Открываем выбранную карточку
     cards[index].textContent = emojis[index];
     cards[index].classList.add("open");
+    cards[index].setAttribute(
+        "aria-label",
+        `Карточка ${index + 1}: ${emojis[index]}`
+    );
+
     opened.push(index);
 
+    // Проверяем пару
     if (opened.length === 2) {
         const [a, b] = opened;
+
         if (emojis[a] === emojis[b]) {
             matched.push(a, b);
+
             cards[a].classList.add("matched");
             cards[b].classList.add("matched");
+
+            cards[a].setAttribute(
+                "aria-label",
+                `Найдена пара: ${emojis[a]}`
+            );
+
+            cards[b].setAttribute(
+                "aria-label",
+                `Найдена пара: ${emojis[b]}`
+            );
+
             opened = [];
 
-            if (matched.length === 4) {
-                result.textContent = "Жеңіске жеттіңіз уху👑";
-                cards.forEach(card => card.disabled = true);
+            // Победа, когда найдены обе пары
+            if (matched.length === cards.length) {
+                result.textContent = "Ура! Ты победила! 👑💗";
+
+                cards.forEach(card => {
+                    card.disabled = true;
+                });
             }
         }
     }
 }
 
+/* Обработчики нажатий */
 cards.forEach(card => {
-    card.addEventListener("click", () => tapCard(Number(card.dataset.index)));
+    card.addEventListener("click", () => {
+        tapCard(Number(card.dataset.index));
+    });
 });
 
+/* Перезапуск игры */
 restart.addEventListener("click", newGame);
+
+/* Запускаем игру */
 newGame();
 </script>
+
 </body>
 </html>
+```
